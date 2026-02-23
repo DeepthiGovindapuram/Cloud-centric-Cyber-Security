@@ -1,15 +1,25 @@
 import warnings
 from cryptography.utils import CryptographyDeprecationWarning
 warnings.filterwarnings("ignore", category=CryptographyDeprecationWarning)
+
 from scapy.all import sniff, wrpcap
+import os
 
 PACKETS_TO_CAPTURE = 1000
 CAPTURE_FILE_PREFIX = "captured_packets"
 
-## The capture engine will sniff a particular interface, and captures packets and saves it to a file
+# ===== PATH FIX (LOCAL + DOCKER SUPPORT) =====
+if os.path.exists("/app"):
+    BASE_PATH = "/app/data1"        # Docker path
+else:
+    BASE_PATH = os.getcwd()         # Your laptop folder
+
+PCAP_FILE = os.path.join(BASE_PATH, "captured_traffic.pcap")
+# ============================================
+
 captured_packets = []
 
-## Function to capture packets and append to the dictionary
+# Function to capture packets
 def packet_callback(packet):
     global captured_packets
     captured_packets.append(packet)
@@ -19,12 +29,12 @@ def packet_callback(packet):
 
 def save_packets():
     global captured_packets
-    filename = "/app/data1/captured_traffic.pcap"
-    wrpcap(filename, captured_packets)
-    print(f"{len(captured_packets)} packets captured and saved to {filename}")
+    wrpcap(PCAP_FILE, captured_packets)
+    print(f"{len(captured_packets)} packets captured and saved to {PCAP_FILE}")
     captured_packets = []
 
 def main():
+    print("Starting packet capture...")
     sniff(prn=packet_callback, store=0)
 
 if __name__ == "__main__":
