@@ -10,12 +10,12 @@ logging.basicConfig(filename='/app/data2/alert.log', level=logging.INFO,
 
 def send_email(subject, body):
     # Email configuration
-    sender_email = ''
-    receiver_email = ''
-    smtp_server = ''
+    sender_email = 'gdeepthi504@gmail.com'
+    receiver_email = 'y22batch12project@gmail.com'
+    smtp_server = 'smtp.gmail.com'
     smtp_port = 587
-    smtp_username = ''
-    smtp_password = ''
+    smtp_username = 'gdeepthi504@gmail.com'
+    smtp_password = 'lkbotcrhtxgkrgvy'
 
     # Create the email message
     msg = MIMEMultipart()
